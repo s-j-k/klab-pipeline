@@ -1,5 +1,5 @@
 done_ch1: true
-#done_ch2: false
+extract_cp: true
 f_sample: 14.5
 input_format: tif
 ppm_x: 1.0
