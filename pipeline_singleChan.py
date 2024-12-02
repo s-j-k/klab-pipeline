@@ -37,11 +37,11 @@ with open('meta3.yaml', 'r') as file: # this is the metadata file in the local c
 for session in all_sessions:
     session_path = Path(session['session_path'])
 
-    if session_path.joinpath("suite2p").is_dir():
-        try:
-            shutil.rmtree(str(session_path.joinpath("suite2p")))
-        except PermissionError:
-            session_path.joinpath('permerror.log').touch()
+#    if session_path.joinpath("suite2p").is_dir():
+#        try:
+#            shutil.rmtree(str(session_path.joinpath("suite2p")))
+#        except PermissionError:
+#            session_path.joinpath('permerror.log').touch()
 
     ops = preprocessing.default_ops()
     data_bin_file = session_path.joinpath("suite2p", "plane0", "data.bin")
@@ -76,10 +76,10 @@ for session in all_sessions:
         'fs': fs,
         'aspect': session['ppm_x'] / session['ppm_y'],
         'keep_movie_raw': False,
-        'batch_size': 1000 
+        'batch_size': 500 
     }
 
-    ops = suite2p.run_s2p(ops, db)
+    ops = suite2p.run_s2p(ops, db) # this runs suite2p 
 
 
 #    mean_image = {'chan1': ops['meanImg'], 'chan2': ops['meanImg_chan2']}
@@ -94,8 +94,8 @@ for session in all_sessions:
 #    if 'done_ch2' in session.keys() and session['done_ch2']:
 #        continue
 
-#    output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel2"))
-#    os.makedirs(str(output_folder), exist_ok=True)
+    output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel1"))
+    os.makedirs(str(output_folder), exist_ok=True)
 
     ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
     ops = np.load(ops_file_name, allow_pickle=True).item()
@@ -108,7 +108,7 @@ for session in all_sessions:
 
     mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan1-enhanced")
     if not os.path.isdir(mask_path):
-        session['done_ch2'] = False
+        session['done_ch1'] = False
         with open('meta3.yaml', 'w') as file:
             yaml.dump_all(all_sessions, file, default_flow_style=False)
         continue
