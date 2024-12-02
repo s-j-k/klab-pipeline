@@ -10,10 +10,9 @@ import os
 import numpy as np
 from suite2p import io, extraction, classification
 from matplotlib import pyplot as plt
-
 import preprocessing
 
-#this code is for two channels
+#this code is for one axon channel
 
 def fn_get_cellprofiler_masks(path):
     _m = []
@@ -65,7 +64,7 @@ for session in all_sessions:
         elif session['input_format'] == "tif":
             tif_file=glob(str(session_path.joinpath('raw').joinpath('*.tif')))
             if len(tif_file) != 1:
-                raise IOError("Directory has multiple tiff files")
+                raise IOError("Directory has multiple tif files")
             mmap = tif_memmap(tif_file[0])
             fs = mmap.metadata['frame_rate'] # this is for one plane. if two, div by 2
             mmap._mmap.close()
@@ -85,32 +84,30 @@ for session in all_sessions:
 
     ops = suite2p.run_s2p(ops, db)
 
-    session['done_ch1'] = True
-    with open('meta.yaml', 'w') as file:
-        yaml.dump_all(all_sessions, file, default_flow_style=False)
 
-    mean_image = {'chan1': ops['meanImg'], 'chan2': ops['meanImg_chan2']}
+#    mean_image = {'chan1': ops['meanImg'], 'chan2': ops['meanImg_chan2']}
+    mean_image = {'chan1': ops['meanImg']}
     for chan in mean_image:
         im = mean_image[chan]
         im = im.clip(*np.percentile(im, (1, 99)))
         plt.imsave(str(session_path.joinpath(f"mean_image_{chan}-enhanced.tiff")), im, cmap='gray')
 
 # Extracting fluorescence traces from green channel
-for session in all_sessions:
-    if 'done_ch2' in session.keys() and session['done_ch2']:
-        continue
+#for session in all_sessions:
+#    if 'done_ch2' in session.keys() and session['done_ch2']:
+#        continue
 
-    output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel2"))
-    os.makedirs(str(output_folder), exist_ok=True)
+#    output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel2"))
+#    os.makedirs(str(output_folder), exist_ok=True)
 
-    ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
-    ops = np.load(ops_file_name, allow_pickle=True).item()
-    mean_image_buffer = ops['meanImg']
-    ops['meanImg'] = ops['meanImg_chan2']
-    ops['meanImg_chan2'] = mean_image_buffer
+ #   ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
+ #   ops = np.load(ops_file_name, allow_pickle=True).item()
+ #   mean_image_buffer = ops['meanImg']
+ #   ops['meanImg'] = ops['meanImg_chan2']
+ #   ops['meanImg_chan2'] = mean_image_buffer
 
-    ops['reg_file'] = str(output_folder.parent.parent.joinpath('data_chan2.bin'))
-    ops['reg_file_chan2'] = str(output_folder.parent.parent.joinpath('data.bin'))
+  #  ops['reg_file'] = str(output_folder.parent.parent.joinpath('data_chan2.bin'))
+  #  ops['reg_file_chan2'] = str(output_folder.parent.parent.joinpath('data.bin'))
 
     mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan2-enhanced")
     if not os.path.isdir(mask_path):
@@ -128,18 +125,18 @@ for session in all_sessions:
 
     spks = np.zeros_like(f)
     iscell = classification.classify(stat=stat, classfile=classification.user_classfile)
-    redcell = iscell.copy()
+#    redcell = iscell.copy()
 
     np.save(output_folder.joinpath("ops.npy"), ops)
     np.save(output_folder.joinpath("stat.npy"), stat)
     np.save(output_folder.joinpath("F.npy"), f)
     np.save(output_folder.joinpath("Fneu.npy"), f_neu)
     np.save(output_folder.joinpath("F_chan2.npy"), f_chan2)
-    np.save(output_folder.joinpath("Fneu_chan2.npy"), f_neu_chan2)
+#    np.save(output_folder.joinpath("Fneu_chan2.npy"), f_neu_chan2)
     np.save(output_folder.joinpath("spks.npy"), spks)
     np.save(output_folder.joinpath("iscell.npy"), iscell)
-    np.save(output_folder.joinpath("redcell.npy"), redcell)
+ #   np.save(output_folder.joinpath("redcell.npy"), redcell)
 
-    session['done_ch2'] = True
-    with open('meta.yaml', 'w') as file:
+    session['done_ch1'] = True
+    with open('meta3.yaml', 'w') as file:
         yaml.dump_all(all_sessions, file, default_flow_style=False)
