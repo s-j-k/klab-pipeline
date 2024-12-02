@@ -1,0 +1,9 @@
+done_ch1: true
+done_ch2: false
+f_sample: 17
+input_format: tif
+ppm_x: 3.0
+ppm_y: 3.0
+session_path: /vast/kkuchib1/Mohammad/132-001
+--- null
+...

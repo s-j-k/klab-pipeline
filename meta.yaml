@@ -1,0 +1,23 @@
+done_ch1: true
+done_ch2: true
+f_sample: -1
+input_format: sbx
+ppm_x: 2.55
+ppm_y: 2.66
+session_path: /vast/kkuchib1/Mohammad/083-017-001
+--- 
+done_ch1: false
+done_ch2: true 
+f_sample: -1
+input_format: sbx
+ppm_x: 2.55
+ppm_y: 2.66
+session_path: /vast/kkuchib1/Mohammad/083-017-002
+---     
+done_ch1: false
+done_ch2: true 
+f_sample: -1
+input_format: sbx
+ppm_x: 2.55
+ppm_y: 2.66
+session_path: /vast/kkuchib1/Mohammad/083-017-003
