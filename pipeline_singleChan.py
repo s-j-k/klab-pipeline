@@ -97,14 +97,14 @@ for session in all_sessions:
 #    output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel2"))
 #    os.makedirs(str(output_folder), exist_ok=True)
 
- #   ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
- #   ops = np.load(ops_file_name, allow_pickle=True).item()
- #   mean_image_buffer = ops['meanImg']
+    ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
+    ops = np.load(ops_file_name, allow_pickle=True).item()
+    mean_image_buffer = ops['meanImg']
  #   ops['meanImg'] = ops['meanImg_chan2']
  #   ops['meanImg_chan2'] = mean_image_buffer
 
   #  ops['reg_file'] = str(output_folder.parent.parent.joinpath('data_chan2.bin'))
-  #  ops['reg_file_chan2'] = str(output_folder.parent.parent.joinpath('data.bin'))
+    ops['reg_file'] = str(output_folder.parent.parent.joinpath('data.bin'))
 
     mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan1-enhanced")
     if not os.path.isdir(mask_path):
