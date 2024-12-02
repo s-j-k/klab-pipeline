@@ -35,9 +35,6 @@ with open('meta3.yaml', 'r') as file: # this is the metadata file in the local c
     all_sessions = list(yaml.safe_load_all(file))
 
 for session in all_sessions:
-    if session['done_ch1']:
-        continue
-
     session_path = Path(session['session_path'])
 
     if session_path.joinpath("suite2p").is_dir():
@@ -109,18 +106,18 @@ for session in all_sessions:
   #  ops['reg_file'] = str(output_folder.parent.parent.joinpath('data_chan2.bin'))
   #  ops['reg_file_chan2'] = str(output_folder.parent.parent.joinpath('data.bin'))
 
-    mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan2-enhanced")
+    mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan1-enhanced")
     if not os.path.isdir(mask_path):
         session['done_ch2'] = False
-        with open('meta.yaml', 'w') as file:
+        with open('meta3.yaml', 'w') as file:
             yaml.dump_all(all_sessions, file, default_flow_style=False)
         continue
 
     stat = fn_get_cellprofiler_masks(mask_path)
     bin_path = os.path.join(session["session_path"], "suite2p", "plane0")
-    with io.BinaryFile(filename=os.path.join(bin_path, "data_chan2.bin"), Lx=ops['Lx'], Ly=ops['Ly']) as f_reg, \
-            io.BinaryFile(filename=os.path.join(bin_path, "data.bin"), Lx=ops['Lx'], Ly=ops['Ly']) as f_reg_chan2:
-        stat, f, f_neu, f_chan2, f_neu_chan2 = extraction.extraction_wrapper(stat, f_reg, f_reg_chan2=f_reg_chan2,
+ #   with io.BinaryFile(filename=os.path.join(bin_path, "data_chan2.bin"), Lx=ops['Lx'], Ly=ops['Ly']) as f_reg, \
+    with io.BinaryFile(filename=os.path.join(bin_path, "data.bin"), Lx=ops['Lx'], Ly=ops['Ly']) as f_reg:
+        stat, f, f_neu, = extraction.extraction_wrapper(stat, f_reg,
                                                                              ops={**ops, **{"allow_overlap": True}})
 
     spks = np.zeros_like(f)
@@ -131,7 +128,6 @@ for session in all_sessions:
     np.save(output_folder.joinpath("stat.npy"), stat)
     np.save(output_folder.joinpath("F.npy"), f)
     np.save(output_folder.joinpath("Fneu.npy"), f_neu)
-    np.save(output_folder.joinpath("F_chan2.npy"), f_chan2)
 #    np.save(output_folder.joinpath("Fneu_chan2.npy"), f_neu_chan2)
     np.save(output_folder.joinpath("spks.npy"), spks)
     np.save(output_folder.joinpath("iscell.npy"), iscell)

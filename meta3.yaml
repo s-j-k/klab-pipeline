@@ -1,9 +1,9 @@
-done_ch1: true
-done_ch2: false
-f_sample: 17
+done_ch1: false
+#done_ch2: false
+f_sample: 14.5
 input_format: tif
-ppm_x: 3.0
-ppm_y: 3.0
-session_path: /vast/kkuchib1/Mohammad/132-001
+ppm_x: 1.0
+ppm_y: 1.0
+session_path: O:\sjk\DATA\imagingData\meso\sk207\006
 --- null
 ...

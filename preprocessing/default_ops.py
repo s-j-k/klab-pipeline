@@ -5,8 +5,8 @@ def default_ops():
     ops = suite2p.default_ops()
     # ---------- Main setting ----------
     ops['nplanes'] = 1
-    ops['nchannels'] = 2
-    ops['functional_chan'] = 2
+    ops['nchannels'] = 1
+    ops['functional_chan'] = 1
     ops['tau'] = 0.7
     # 0.7 for GCaMP6f,
     # 0.7 for jrgeco https://github.com/MouseLand/suite2p/issues/233
@@ -22,7 +22,7 @@ def default_ops():
     # ---------- output setting ----------
 
     # ---------- registration ----------
-    ops['align_by_chan'] = 2
+    ops['align_by_chan'] = 1
     ops['batch_size'] = 1000
 
     # ---------- cellpose ----------
