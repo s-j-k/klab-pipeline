@@ -95,7 +95,7 @@ for session in all_sessions:
 # then rerun the code, it will skip the above section and come to here 
     if session['extract_cp']:
             
-        output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0", "channel1"))
+        output_folder = Path(os.path.join(session["session_path"], "suite2p", "plane0"))
         os.makedirs(str(output_folder), exist_ok=True)
 
         ops_file_name = os.path.join(session["session_path"], "suite2p", "plane0", "ops.npy")
@@ -107,7 +107,7 @@ for session in all_sessions:
     #  ops['reg_file'] = str(output_folder.parent.parent.joinpath('data_chan2.bin'))
         ops['reg_file'] = str(output_folder.parent.parent.joinpath('data.bin'))
 
-        mask_path = os.path.join(session["session_path"], "rois", "mean_image_chan1-enhanced")
+        mask_path = os.path.join(session["session_path"], "rois") # make sure this is the right path where ur ROIs are!
         if not os.path.isdir(mask_path):
             session['done_ch1'] = False
             with open('meta3.yaml', 'w') as file:
