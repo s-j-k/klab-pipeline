@@ -95,6 +95,48 @@ class TuningDataSingleChannel:
         return (self._trange <= b) & (self._trange > a)
 
 
+from pathlib import Path
+import numpy as np
+import os
+
+def population_summary(d, save_path):
+    for chan in ["axon"]:
+        epochs = d.epochs[chan]        
+        std = epochs[:, data.between(-1000, 0)].std(1, keepdims=True)
+        epochs -= epochs[:, data.between(-1000, 0)].mean(1, keepdims=True)
+        epochs = epochs / std
+
+        fig, axes = plt.subplots(4, 5, figsize=(16, 16))
+        unique_stimuli = np.unique(d.tones)
+
+        for ax, s in zip(axes.flat, unique_stimuli):
+            ax.set_title(f"{s/1000:0.1f} kHz")
+            plot_data = np.nanmean(epochs[d.tones == s], 0).T
+            ax.imshow(plot_data, aspect=plot_data.shape[1]/plot_data.shape[0] * 2, 
+                      cmap="bwr", vmin=-1, vmax=1)
+
+        for ax in axes.flat:
+            ax.grid(False)
+
+        for ax in axes.flat[len(unique_stimuli):]:
+            ax.axis("off")
+            
+        desired_times = [-1000, 0, 1000, 2000, 3000, 4000]
+        xtick_positions = [np.abs(data._trange - dt).argmin() for dt in desired_times]
+        
+        for ax in axes.flat:
+            ax.set_xticks(xtick_positions)
+            ax.set_xticklabels(desired_times, rotation=45)
+            ax.set_xlabel("time [ms]")
+
+        fig.suptitle(f"{chan}", fontsize=20)
+        fig.tight_layout()
+        sns.despine()
+        fig.savefig(save_path.joinpath(f"{chan}_population_summary.png"))
+        plt.close(fig)
+
+
+
 def population_average_summary(d, save_path):
     for chan in ["axon"]:
         epochs = d.epochs[chan]        
@@ -130,15 +172,12 @@ def population_average_summary(d, save_path):
         fig.savefig(save_path.joinpath(f"{chan}_population__average_summary.png"))
         plt.close(fig)
 
-
-plt.plot(data.epochs['axon'].mean((0, 2)))
-
-
 figure_directory = Path(r"O:\sjk\DATA\imagingData\meso\sk206\007\Figures")
 os.makedirs(figure_directory, exist_ok=True)
 data = TuningDataSingleChannel(r"O:\sjk\DATA\imagingData\meso\sk206\007", r"W:\su\CODE\klab-pipeline\stimulus_info_v4.yaml", accepted_only=False)
 # If you set accepted_only=False in the data loader it will ignore the iscell variable
-population_summary(data, figure_directory)
 
+population_summary(data, figure_directory)
+population_average_summary(data, figure_directory)
 
 
