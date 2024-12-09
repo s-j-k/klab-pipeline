@@ -16,7 +16,7 @@ class TuningDataSingleChannel:
         print(f"Loading session folder {session_path}")
         if not isinstance(session_path, Path):
             session_path = Path(session_path)
-        path = session_path.joinpath("suite2p", "plane0","channel1")
+        path = session_path.joinpath("suite2p", "plane0")
 
         #self._is_valid = np.load(path.joinpath("iscell.npy"), allow_pickle=True).astype(bool).flatten()
         self._is_valid = np.load(path.joinpath("iscell.npy"), allow_pickle=True)[:, 0].astype(bool).flatten()
@@ -50,7 +50,7 @@ class TuningDataSingleChannel:
     def _epoch_the_data(self):
         sampling_rate = self._ops['fs']
         frame_range = np.arange(-20, 29)
-        #frame_range = np.arange(-20, 79)
+        #frame_range = np.arange(-20, 50)
         self._trange = frame_range / sampling_rate * 1000
         _in_epoch_indices = (self._tone_onsets[:, np.newaxis] + frame_range).astype('int')
 
@@ -121,7 +121,8 @@ def population_summary(d, save_path):
         for ax in axes.flat[len(unique_stimuli):]:
             ax.axis("off")
             
-        desired_times = [-1000, 0, 1000, 2000, 3000, 4000]
+        #desired_times = [-1000, 0, 1000, 2000, 3000, 4000]
+        desired_times = [-1000, 0, 1000, 2000, 3000]
         xtick_positions = [np.abs(data._trange - dt).argmin() for dt in desired_times]
         
         for ax in axes.flat:
@@ -158,7 +159,7 @@ def population_average_summary(d, save_path):
         for ax in axes.flat[len(unique_stimuli):]:
             ax.axis("off")
             
-        desired_times = [-1000, 0, 1000, 2000, 3000, 4000]
+        desired_times = [-1000, 0, 1000, 2000, 3000]
         xtick_positions = [np.abs(data._trange - dt).argmin() for dt in desired_times]
         
         for ax in axes.flat:
@@ -172,9 +173,9 @@ def population_average_summary(d, save_path):
         fig.savefig(save_path.joinpath(f"{chan}_population__average_summary.png"))
         plt.close(fig)
 
-figure_directory = Path(r"O:\sjk\DATA\imagingData\meso\sk206\007\Figures")
+figure_directory = Path(r"O:\sjk\DATA\imagingData\meso\sk214\007\Figures")
 os.makedirs(figure_directory, exist_ok=True)
-data = TuningDataSingleChannel(r"O:\sjk\DATA\imagingData\meso\sk206\007", r"W:\su\CODE\klab-pipeline\stimulus_info_v4.yaml", accepted_only=False)
+data = TuningDataSingleChannel(r"O:\rockfish\mohammad\Data\214-001-007", r"W:\su\CODE\klab-pipeline\stimulus_info_v4.yaml", accepted_only=False)
 # If you set accepted_only=False in the data loader it will ignore the iscell variable
 
 population_summary(data, figure_directory)
