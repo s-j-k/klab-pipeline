@@ -37,8 +37,9 @@ if this is the first time:
 2. run the following commands:
 module load gcc/9.3.0
 module load anaconda
-3. create a suite2p environment
-4. format the data as the following:
+3. create a suite2p environment:
+conda create --name suite2p python=3.9
+5. format the data as the following:
 sessionName > raw > tiff file
 within this sessionName folder, the code will create the suite2p folder within it
-5. produce a .yaml file and a slurm file  
+6. produce a .yaml file and a slurm file  
