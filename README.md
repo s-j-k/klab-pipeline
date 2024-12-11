@@ -66,8 +66,10 @@ cd /vast/kkuchib1/mohammad/kuchibhotlalab-pipeline
 
 python pipeline_tuning_single_channel.py
 ```
+
 and save the file
 8. when you want to run the task, in the terminal, type
 ```sbatch job.slurm```
+
 9. then, a job id will be generated and a file named slurm-jobid.log will be created that outputs text from the job you are running.
 10. check progress using sqme 
