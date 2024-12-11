@@ -12,7 +12,7 @@ The main data folder should have two folders within it--the raw data folder, the
 5. verify that the meta.yaml and the pipeline.py files you are using are in the same directory, and that the correct meta.yaml file is being called in your pipeline.py file.
 6. run the pipeline file 
 
-# If you set accepted_only=False in the data loader it will ignore the iscell variable
+If you set accepted_only=False in the data loader it will ignore the iscell variable
 
 then, once you are done preprocessing, run the thalcor-tuning repo to plot the data. to do this, refer to the following:
 for tuning, use popTuningSingleChan.py
