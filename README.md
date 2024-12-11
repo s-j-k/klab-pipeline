@@ -42,4 +42,32 @@ conda create --name suite2p python=3.9
 5. format the data as the following:
 sessionName > raw > tiff file
 within this sessionName folder, the code will create the suite2p folder within it
-6. produce a .yaml file and a slurm file  
+6. produce a .yaml file that has your metadata
+7. produce a slurm file by running the following in the terminal
+nano job.slurm
+and paste the following:
+```
+!/bin/bash
+#SBATCH --job-name=tuning_axon	  # create a short name for your job
+#SBATCH --nodes=1         # node count
+#SBATCH --ntasks=1         # total number of tasks across all nodes
+#SBATCH --cpus-per-task=1     # cpu-cores per task (>1 if multi-threaded tasks)
+#SBATCH --mem-per-cpu=64G     # memory per cpu-core (4G is default)
+#SBATCH --time=08:00:00      # total run time limit (HH:MM:SS)
+#SBATCH --partition=parallel
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=sjkim1@jh.edu
+
+module purge
+module load gcc/9.3.0
+module load anaconda3
+conda activate preprocessing
+cd /vast/kkuchib1/mohammad/kuchibhotlalab-pipeline
+
+python pipeline_tuning_single_channel.py
+```
+and save the file
+8. when you want to run the task, in the terminal, type
+```sbatch job.slurm```
+9. then, a job id will be generated and a file named slurm-jobid.log will be created that outputs text from the job you are running.
+10. check progress using sqme 
