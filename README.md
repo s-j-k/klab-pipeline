@@ -38,7 +38,13 @@ if this is the first time:
 module load gcc/9.3.0
 module load anaconda
 3. create a suite2p environment:
+```
 conda create --name suite2p python=3.9
+python -m pip install suite2p[io]
+conda install pyyaml 
+```
+this will install suite2p and all of the dependencies
+
 5. format the data as the following:
 sessionName > raw > tiff file
 and within these sessionName folders, have folders for the rois. then, generate the masks in cell profiler and put them in the rois folder. 
