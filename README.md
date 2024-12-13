@@ -43,7 +43,10 @@ conda create --name suite2p python=3.9
 python -m pip install suite2p[io]
 conda install pyyaml 
 ```
-this will install suite2p and all of the dependencies
+suite2p[io] will install suite2p and all of the dependencies
+to read the yaml files, you will need to install the module yaml. if you use pip/conda install yaml this will not work and after you run the job in slurm, an error will appear saying the module yaml is not found. to avoid this use conda install yaml
+
+you may get problems with your environment, such as "the environment is inconsistent," but this is fine and it will run the job regardless
 
 5. format the data as the following:
 sessionName > raw > tiff file
@@ -77,7 +80,6 @@ python pipeline_tuning_single_channel.py
 and save the file
 8. when you want to run the task, in the terminal, type
 ```sbatch job.slurm```
-
-9. then, a job id will be generated and a file named slurm-jobid.log will be created that outputs text from the job you are running.
- 
-10. check progress using ```sqme``` 
+9. then, a job id will be generated and a file named slurm-jobid.log will be created that outputs text from the job you are running. jobid is a string of numbers
+10. check progress use ```sqme```
+12. to check the job, use ```cat slurm-jobid.out```
