@@ -31,9 +31,7 @@ for behavior
 
 to run this on the computational cluster rockfish:
 1. log into rockfish using windows powershell by using the command:
- ssh -X sjkim1@login.rockfish.jh.edu
-and enter your password
-if this is the first time:
+ ssh -X sjkim1@login.rockfish.jh.edu and enter your password. if this is the first time:
 2. run the following commands:
 module load gcc/9.3.0
 module load anaconda
