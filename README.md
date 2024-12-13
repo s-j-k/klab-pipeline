@@ -31,7 +31,7 @@ for behavior
 
 to run this on the computational cluster rockfish:
 1. log into rockfish using windows powershell by using the command:
- ssh -X sjkim1@login.rockfish.jhu.edu
+ ssh -X sjkim1@login.rockfish.jh.edu
 and enter your password
 if this is the first time:
 2. run the following commands:
@@ -41,19 +41,20 @@ module load anaconda
 conda create --name suite2p python=3.9
 5. format the data as the following:
 sessionName > raw > tiff file
+and within these sessionName folders, have folders for the rois. then, generate the masks in cell profiler and put them in the rois folder. 
 within this sessionName folder, the code will create the suite2p folder within it
-6. produce a .yaml file that has your metadata
-7. produce a slurm file by running the following in the terminal
-nano job.slurm
+7. produce a .yaml file that has your metadata
+8. produce a slurm file by running the following in the terminal
+```nano job.slurm```
 and paste the following:
 ```
-!/bin/bash
+#!/bin/bash
 #SBATCH --job-name=tuning_axon	  # create a short name for your job
 #SBATCH --nodes=1         # node count
 #SBATCH --ntasks=1         # total number of tasks across all nodes
 #SBATCH --cpus-per-task=1     # cpu-cores per task (>1 if multi-threaded tasks)
 #SBATCH --mem-per-cpu=64G     # memory per cpu-core (4G is default)
-#SBATCH --time=08:00:00      # total run time limit (HH:MM:SS)
+#SBATCH --time=16:00:00      # total run time limit (HH:MM:SS)
 #SBATCH --partition=parallel
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sjkim1@jh.edu
@@ -72,4 +73,5 @@ and save the file
 ```sbatch job.slurm```
 
 9. then, a job id will be generated and a file named slurm-jobid.log will be created that outputs text from the job you are running.
-10. check progress using sqme 
+ 
+10. check progress using ```sqme``` 
